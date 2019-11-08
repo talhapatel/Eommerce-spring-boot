@@ -8,16 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public interface BufCartRepository extends JpaRepository<BufCart,Long>{
+public interface BufCartRepository extends JpaRepository<Bufcart,Long>{
 	
-	List<BufCart> findByEmail(String email);
 	
-	BufCart findByBufCartIdAndEmail(int Bufcartid,String email);
-	
-	void deleteByBufcartIdAndEmail(int bufcartId, String email);
-
-	List<BufCart> findAllByEmail(String email);
-
-	List<BufCart> findAllByOrderId(int orderId);
+	  List<Bufcart> findByEmail(String email);
+	  
+	 Bufcart findByBufcartIdAndEmail(int bufcartId,String email);
+	  
+	  void deleteByBufcartIdAndEmail(int bufcartId, String email);
+	  
+	  List<Bufcart> findAllByEmail(String email);
+	  
+	  List<Bufcart> findAllByOrderId(int orderId);
+	 
 
 }

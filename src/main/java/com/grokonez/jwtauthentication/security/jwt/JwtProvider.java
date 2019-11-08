@@ -3,13 +3,19 @@ package com.grokonez.jwtauthentication.security.jwt;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import com.grokonez.jwtauthentication.model.User;
+import com.grokonez.jwtauthentication.repository.UserRepository;
 import com.grokonez.jwtauthentication.security.services.UserPrinciple;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class JwtProvider {
@@ -21,15 +27,18 @@ public class JwtProvider {
 
     @Value("${grokonez.app.jwtExpiration}")
     private int jwtExpiration;
-
+@Autowired
+    UserRepository userDetails;
     public String generateJwtToken(Authentication authentication) {
 
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+//User user=userDetails.findByUsername(userPrincipal.getUsername());
 
         return Jwts.builder()
 		                .setSubject((userPrincipal.getUsername()))
+		               
 		                .setIssuedAt(new Date())
-		                .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
+		              //  .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
 		                .signWith(SignatureAlgorithm.HS512, jwtSecret)
 		                .compact();
     }

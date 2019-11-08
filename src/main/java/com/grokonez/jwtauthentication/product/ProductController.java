@@ -16,8 +16,11 @@ import com.grokonez.jwtauthentication.controller.ApiResponse;
 import com.grokonez.jwtauthentication.controller.BaseController;
 import com.grokonez.jwtauthentication.controller.GoMessageType;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
+@Api(value = "Product Controller")
 @RestController
 @Scope("request")
 public class ProductController extends BaseController{
@@ -25,7 +28,7 @@ public class ProductController extends BaseController{
 	@Autowired
 	private ProductRepository productRepository;
 	
-	
+	@ApiOperation(value = "Add Product ")
 	@PostMapping("/addProduct")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ApiResponse addProduct(@RequestBody Product product)
@@ -37,7 +40,7 @@ public class ProductController extends BaseController{
 	
 		return renderResponse();
 	}
-	
+	@ApiOperation(value = "Get Product  list")
 	@GetMapping("/getProductList")
 	@PreAuthorize("hasRole('ADMIN') or hasRole(USER)")
 	public ApiResponse getProductList() {
@@ -47,7 +50,7 @@ public class ProductController extends BaseController{
 		
 		return renderResponse();
 	}
-	
+	@ApiOperation(value = "Delete Product")
 	@DeleteMapping("/deleteProduct/{productid}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ApiResponse deleteProduct(@PathVariable Long productid)
@@ -58,4 +61,5 @@ public class ProductController extends BaseController{
 		return renderResponse();
 	}
 
+	
 }

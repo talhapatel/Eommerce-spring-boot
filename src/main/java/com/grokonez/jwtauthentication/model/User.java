@@ -19,6 +19,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
@@ -47,6 +49,7 @@ public class User{
     @Email
     private String email;
 
+    @JsonIgnore
     @NotBlank
     @Size(min=6, max = 100)
     private String password;

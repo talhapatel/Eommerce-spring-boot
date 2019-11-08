@@ -30,13 +30,10 @@ import com.grokonez.jwtauthentication.controller.GoMessageType;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.annotation.RequestScope;
 //@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
-@Scope("prototype")
+@Scope("request")
 
-//@Scope(WebApplicationContext.SCOPE_REQUEST)
 @ControllerAdvice
-// @RestController
 
-//public class GlobalExceptionHandler {
 public class GlobalExceptionHandler extends BaseController{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	

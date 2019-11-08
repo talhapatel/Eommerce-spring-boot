@@ -12,6 +12,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import com.grokonez.jwtauthentication.controller.ApiResponse;
+import com.grokonez.jwtauthentication.controller.AuthorizationException;
+import com.grokonez.jwtauthentication.controller.GoMessageType;
+
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
@@ -24,7 +28,9 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
                         		 throws IOException, ServletException {
     	
         logger.error("Unauthorized error. Message - {}", e.getMessage());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error -> Unauthorized");
+    
+
+       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error -> Unauthorized");
         
     }
 }

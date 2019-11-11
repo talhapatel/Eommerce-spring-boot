@@ -29,7 +29,7 @@ public class BufCartController extends BaseController{
 	BufCartRepository bufcartRepo;
 	
 	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/addToCart")
+	@PostMapping("/addToCart")
 	public ApiResponse addToCart(@RequestParam String prodId,@RequestParam String email)
 	{
 		

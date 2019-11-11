@@ -1,8 +1,11 @@
 package com.stationary.product;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties.Storage;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.stationary.controller.ApiResponse;
 import com.stationary.controller.BaseController;
@@ -28,6 +32,8 @@ public class ProductController extends BaseController{
 	@Autowired
 	private ProductRepository productRepository;
 	
+	
+	
 	@ApiOperation(value = "Add Product ")
 	@PostMapping("/addProduct")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -44,9 +50,9 @@ public class ProductController extends BaseController{
 	@GetMapping("/getProductList")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ApiResponse getProductList() {
-	
 		
 		setData("data", productRepository.findAll());
+	//	setData("image",)
 		
 		return renderResponse();
 	}

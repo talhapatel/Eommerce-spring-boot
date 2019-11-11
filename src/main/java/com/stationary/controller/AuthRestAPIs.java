@@ -33,7 +33,7 @@ import com.stationary.repository.UserRepository;
 import com.stationary.security.jwt.JwtProvider;
 @Scope("request")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthRestAPIs extends BaseController{
 
 	@Autowired

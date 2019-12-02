@@ -22,6 +22,7 @@ public class TestRestAPIs extends BaseController {
 	//	clearMessages();
 		setData("data", "This is user DashBoard");
 		addSuccess(GoMessageType.EXECUTE_SUCCSESS);
+		
 		return renderResponse();
 	}
 

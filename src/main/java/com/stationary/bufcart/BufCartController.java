@@ -44,7 +44,7 @@ public class BufCartController extends BaseController{
 		bufcart.setDateAdded(date);
 		bufcartRepo.save(bufcart);
 
-		
+		setData("count", bufcartRepo.countByEmail(email));
 		addSuccess(GoMessageType.ADD_SUCCESS);
 		return renderResponse();
 	}
@@ -54,6 +54,16 @@ public class BufCartController extends BaseController{
 	{
 	
 		setData("cart",bufcartRepo.findByEmail(email));
+	//	addSuccess(GoMessageType.ADD_SUCCESS);
+		return renderResponse();
+		
+	}
+	@PreAuthorize("hasRole('USER')")
+	@GetMapping("/viewCartBadge")
+	public ApiResponse viewCartBadge(@RequestParam String email)
+	{
+	
+		setData("cart",bufcartRepo.countByEmail(email));
 	//	addSuccess(GoMessageType.ADD_SUCCESS);
 		return renderResponse();
 		

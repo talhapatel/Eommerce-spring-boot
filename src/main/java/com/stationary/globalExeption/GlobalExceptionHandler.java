@@ -6,7 +6,6 @@ import javax.validation.ConstraintViolationException;
 import org.apache.tomcat.util.http.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -26,9 +25,6 @@ import com.stationary.controller.AuthorizationException;
 import com.stationary.controller.BaseController;
 import com.stationary.controller.GoMessage;
 import com.stationary.controller.GoMessageType;
-
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.annotation.RequestScope;
 //@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @Scope("request")
 

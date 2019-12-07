@@ -20,6 +20,8 @@ public interface BufCartRepository extends JpaRepository<Bufcart,Long>{
 	  List<Bufcart> findAllByEmail(String email);
 	  
 	  List<Bufcart> findAllByOrderId(int orderId);
+	  
+	  long countByEmail(String email);
 	 
 
 }

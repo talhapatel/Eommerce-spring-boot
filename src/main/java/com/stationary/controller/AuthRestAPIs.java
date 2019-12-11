@@ -1,10 +1,14 @@
 package com.stationary.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
@@ -16,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +35,7 @@ import com.stationary.model.RoleName;
 import com.stationary.model.User;
 import com.stationary.repository.RoleRepository;
 import com.stationary.repository.UserRepository;
-import com.stationary.security.jwt.JwtProvider;
+import com.stationary.util.JwtProvider;
 @Scope("request")
 @RestController
 @RequestMapping("/auth")
@@ -123,5 +128,25 @@ return renderResponse();
 		addSuccess(GoMessageType.ADD_SUCCESS,"Registration Successfully");
 		return renderResponse();
 		//return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
+	}
+	@GetMapping("/getUserList")
+	public ApiResponse getUserList() {
+		
+		List<User> userListAll=userRepository.findAll();
+		List <User> userList=new ArrayList<User>();
+		
+		for(User user:userListAll) {
+			if(user.getRoles().stream().map(m->m.getName()).collect(Collectors.toList()).contains(RoleName.ROLE_USER)) {
+				userList.add(user);
+			}
+			/*
+			 * Set<Role> userRole=user.getRoles(); for(Role role:userRole) {
+			 * if(role.getName().equals(RoleName.ROLE_USER)) { userList.add(user); } }
+			 */
+		
+		}
+		
+		setData("userList",userList);
+		return renderResponse();
 	}
 }

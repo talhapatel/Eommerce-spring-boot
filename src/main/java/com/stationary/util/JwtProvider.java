@@ -1,4 +1,4 @@
-package com.stationary.security.jwt;
+package com.stationary.util;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;

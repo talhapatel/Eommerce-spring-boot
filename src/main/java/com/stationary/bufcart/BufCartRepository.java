@@ -23,5 +23,6 @@ public interface BufCartRepository extends JpaRepository<Bufcart,Long>{
 	  
 	  long countByEmail(String email);
 	 
+	 
 
 }

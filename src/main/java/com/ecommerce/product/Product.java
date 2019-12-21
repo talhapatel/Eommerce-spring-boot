@@ -16,16 +16,16 @@ public class Product {
 	private String productname;
 	private double price;
 	private int qty;
-	@Lob
-	private byte[] productimage;
-	public Product(long productid, String description, String productname, double price, int qty, byte[] productimage) {
+	
+	private String uniqueId;
+	public Product(long productid, String description, String productname, double price, int qty, String uniqueId) {
 		super();
 		this.productid = productid;
 		this.description = description;
 		this.productname = productname;
 		this.price = price;
 		this.qty = qty;
-		this.productimage = productimage;
+		this.uniqueId = uniqueId;
 	}
 	public Product() {}
 	public long getProductid() {
@@ -58,10 +58,11 @@ public class Product {
 	public void setQty(int qty) {
 		this.qty = qty;
 	}
-	public byte[] getProductimage() {
-		return productimage;
+	public String getUniqueId() {
+		return uniqueId;
 	}
-	public void setProductimage(byte[] productimage) {
-		this.productimage = productimage;
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
 	}
+
 }

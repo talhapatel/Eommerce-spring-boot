@@ -48,7 +48,7 @@ public class ProductController extends BaseController{
 	}
 	@ApiOperation(value = "Get Product  list")
 	@GetMapping("/getProductList")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	
 	public ApiResponse getProductList() {
 		
 		setData("data", productRepository.findAll());

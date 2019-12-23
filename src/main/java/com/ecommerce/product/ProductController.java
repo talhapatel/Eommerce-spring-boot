@@ -3,6 +3,8 @@ package com.ecommerce.product;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.websocket.server.PathParam;
+
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties.Storage;
@@ -64,6 +66,16 @@ public class ProductController extends BaseController{
 		productRepository.deleteById(productid);
 		setData("product", productid);
 		addSuccess(GoMessageType.DELETE_SUCCESS);
+		return renderResponse();
+	}
+	@ApiOperation(value = "Get Product  list By tags")
+	@GetMapping("/getProductListByTags/{tags}")
+	
+	public ApiResponse getProductListByTags(@PathVariable("tags") String tag) {
+		System.out.println("tags"+tag);
+		setData("data", productRepository.getAllByTags(tag));
+	//	setData("image",)
+		
 		return renderResponse();
 	}
 

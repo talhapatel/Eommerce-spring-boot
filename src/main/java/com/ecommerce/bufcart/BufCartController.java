@@ -35,17 +35,21 @@ public class BufCartController extends BaseController{
 		
 		Product cartItem=productRepo.findByProductid(Long.parseLong(prodId));
 		Bufcart bufcart =new Bufcart();
-		bufcart.setEmail(email);
-		bufcart.setProductId(Integer.parseInt(prodId));
-		bufcart.setProductname(cartItem.getProductname());
-		bufcart.setQuantity(1);
-		bufcart.setPrice(cartItem.getPrice());
-		Date date=new Date();
-		bufcart.setDateAdded(date);
-		bufcartRepo.save(bufcart);
-
-		setData("count", bufcartRepo.countByEmail(email));
-		addSuccess(GoMessageType.ADD_SUCCESS);
+		if(cartItem.getQty()>1) {
+			bufcart.setEmail(email);
+			bufcart.setProductId(Integer.parseInt(prodId));
+			bufcart.setProductname(cartItem.getProductname());
+			bufcart.setQuantity(1);
+			bufcart.setPrice(cartItem.getPrice());
+			Date date=new Date();
+			bufcart.setDateAdded(date);
+			bufcartRepo.save(bufcart);
+			cartItem.setQty(cartItem.getQty()-1);
+			productRepo.save(cartItem);
+			setData("count", bufcartRepo.countByEmail(email));
+			addSuccess(GoMessageType.ADD_SUCCESS);
+		}
+addFailure(GoMessageType.ADD_FAILURE,"Product Out of stock");
 		return renderResponse();
 	}
 	@PreAuthorize("hasRole('USER')")
@@ -72,8 +76,15 @@ public class BufCartController extends BaseController{
 	@PutMapping("/updateCart")
 	public ApiResponse updateCart(@RequestParam String bufcartid,@RequestParam String qty,@RequestParam String email) {
 		Bufcart selCart = bufcartRepo.findByBufcartIdAndEmail(Integer.parseInt(bufcartid), email);
-		selCart.setQuantity(Integer.parseInt(qty));
-		bufcartRepo.save(selCart);
+		Product prod=productRepo.findByProductid(selCart.getProductId());
+		if(prod.getQty()>Integer.parseInt(qty)) {
+			selCart.setQuantity(Integer.parseInt(qty));
+			bufcartRepo.save(selCart);
+			prod.setQty(prod.getQty()-Integer.parseInt(qty));
+		}else {
+			addFailure(GoMessageType.ADD_FAILURE,"Out of stock");
+		}
+	
 		
 		List<Bufcart> bufcartlist = bufcartRepo.findByEmail(email);
 		setData("cartList",bufcartlist);

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MimeType;
@@ -30,11 +31,11 @@ public class UploadCotroller extends BaseController{
 
 	@Autowired
 	StorageService storageService;
-	List<String> files = new ArrayList<String>();
+	List<String> files = new ArrayList<>();
 	 @PostMapping("/post")
 	  public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file ,@RequestParam("uniqueId")String uniqueId) {
-	    String message = "";
-	    try {
+		 String message = "";
+		 try {
 	      storageService.store(file,uniqueId);
 	      files.add(uniqueId);
 	 
@@ -53,9 +54,12 @@ public class UploadCotroller extends BaseController{
 		
 	    Resource file1 = storageService.loadFile(uniqueId);
 	    String mimeType= URLConnection.guessContentTypeFromName(file1.getFilename());
-	    headers.add("Content-Type",mimeType);
-	
+	  //  headers.add("Content-Type",mimeType);
+		  return ResponseEntity.ok()
+				  .header(HttpHeaders.CONTENT_DISPOSITION, "filename=\"" + file1.getFilename() + "\"")
+				  .contentType(MediaType.valueOf(mimeType))
+				  .body(file1);
 		
-		return new ResponseEntity<>(file1, headers,HttpStatus.OK);
+		//return new ResponseEntity<>(file1, headers,HttpStatus.OK);
 }
 }

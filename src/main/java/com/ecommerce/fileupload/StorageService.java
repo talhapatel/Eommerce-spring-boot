@@ -3,10 +3,12 @@ package com.ecommerce.fileupload;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,26 +27,41 @@ public class StorageService {
 	 * public void deleteAll(): remove all uploaded files – public void init():
 	 * create upload directory
 	 */
-	
-	
-	 Logger log = LoggerFactory.getLogger(this.getClass().getName());
-	   Path rootLocation = Paths.get("upload-dir");
-	  
-	  public void store(MultipartFile file,String uniqueId) {
-		    try {
-		    	  String fileFrags = file.getOriginalFilename();
-		    	      //    String extension = fileFrags[fileFrags.length-1];
-		     // Files.copy(file.getInputStream(), this.rootLocation.resolve(uniqueId));
-		    		byte[] bytes = file.getBytes();
-				//	Path path = Paths.get(baseDirectoryPath + physicalFileName);
-		    		  rootLocation = Paths.get("upload-dir",uniqueId);
-					Files.write(this.rootLocation, bytes);
-		    	 // File file2=new File(this.rootLocation+(uniqueId));
-		    	
-		    } catch (Exception e) {
-		      throw new RuntimeException("FAIL!");
-		    }
-		  }
+
+
+	Logger log = LoggerFactory.getLogger(this.getClass().getName());
+	Path rootLocation = Paths.get("upload-dir");
+
+	public void store(MultipartFile file, String uniqueId) {
+
+			String fileFrags = file.getOriginalFilename();
+			//    String extension = fileFrags[fileFrags.length-1];
+			// Files.copy(file.getInputStream(), this.rootLocation.resolve(uniqueId));
+
+
+			//if directory exists?
+			if (!Files.exists(rootLocation)) {
+				try {
+					Files.createDirectories(rootLocation);
+				} catch (IOException e) {
+					//fail to create directory
+					e.printStackTrace();
+				}
+			}
+			try (InputStream inputStream = file.getInputStream()) {
+				Files.copy(inputStream, this.rootLocation.resolve(uniqueId), StandardCopyOption.REPLACE_EXISTING);
+			}catch (IOException e){
+				e.printStackTrace();
+			}
+		}
+		//	byte[] bytes = file.getBytes();
+		//	Path path = Paths.get(baseDirectoryPath + physicalFileName);
+		//  rootLocation = Paths.get("upload-dir",uniqueId);
+		//	Files.write(this.rootLocation, bytes);
+		// File file2=new File(this.rootLocation+(uniqueId));
+
+
+
 	  
 	  public Resource loadFile(String uniqueId) {
 		    try {
@@ -53,10 +70,10 @@ public class StorageService {
 		      if (resource.exists() || resource.isReadable()) {
 		        return resource;
 		      } else {
-		        throw new RuntimeException("FAIL!");
+		        throw new RuntimeException("resourse not exists!");
 		      }
 		    } catch (MalformedURLException e) {
-		      throw new RuntimeException("FAIL!");
+		      throw new RuntimeException("malformed url exception");
 		    }
 		  }
 		 
